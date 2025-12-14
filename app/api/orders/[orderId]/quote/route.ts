@@ -3,6 +3,7 @@ import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/lib/auth'; // Assumes authOptions are in this path
 import Order from '@/models/Order';
 import dbConnect from '@/lib/db'; // Assumes a db connection utility
+import mongoose from 'mongoose';
 
 // PUT /api/orders/[orderId]/quote
 // Accessible by: Kitchen Staff
@@ -43,7 +44,9 @@ export async function PUT(
     }
 
     // 3. Update the specific item's price
-    const itemToUpdate = order.items.find((item) => item._id.toString() === itemId);
+    const itemToUpdate = order.items.find(
+      (item: { _id: mongoose.Types.ObjectId }) => item._id.toString() === itemId
+    );
 
     if (!itemToUpdate) {
         return NextResponse.json({ message: 'Item not found in order' }, { status: 404 });

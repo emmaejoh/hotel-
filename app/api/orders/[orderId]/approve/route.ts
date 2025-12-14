@@ -57,6 +57,12 @@ export async function PUT(
         totalPrice += item.quotedPrice * item.quantity;
       } else {
         // For Bar items, the price is on the product itself
+        if (typeof product.price !== 'number') {
+          return NextResponse.json(
+            { message: `Product ${product.name} is missing a price.` },
+            { status: 500 } // Data integrity issue
+          );
+        }
         totalPrice += product.price * item.quantity;
       }
     }

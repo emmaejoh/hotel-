@@ -13,6 +13,11 @@ if (!MONGODB_URI) {
  * in development. This prevents connections growing exponentially
  * during API Route usage.
  */
+// Extend the NodeJS.Global interface to include a `mongoose` property
+declare global {
+  var mongoose: any; // You can be more specific with the type if you have one
+}
+
 let cached = global.mongoose;
 
 if (!cached) {
