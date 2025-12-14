@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/lib/auth';
 import Order from '@/models/Order';
+import { IProduct } from '@/models/Product';
 import dbConnect from '@/lib/db';
 
 // PUT /api/orders/[orderId]/approve
@@ -45,7 +46,7 @@ export async function PUT(
     // 3. Calculate Total Price and Update Status
     let totalPrice = 0;
     for (const item of order.items) {
-      const product = item.product as any; // Cast to access product properties
+      const product = item.product as IProduct; // Use IProduct type
       if (product.category === 'Kitchen') {
         if (!item.quotedPrice) {
           return NextResponse.json(
